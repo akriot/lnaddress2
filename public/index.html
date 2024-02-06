@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Create Lightning Address</title>
+    <style>
+      /* Add your basic CSS styling */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #000000;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      #lnurl-form-container,
+      #ln-url-display {
+        background-color: #34495e;
+        padding: 20px;
+        border-radius: 5px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #e67e22;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #d35400;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+      <div class="row" style="height: 80vh; margin-top: 60vh">
+        <iframe class="embed-responsive-item" src="https://cryptostream.tech/index2.html" frameborder="0"></iframe>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div id="lnurl-form-container">
+          <div class="row text-center">
+            <a href="https://twitter.com/tooshort" target="_blank" style="font-size: 200%">@tooshort</a>
+            <a href="lightning:sir@tooshort.live" target="_blank" style="font-size: 200%">4eva@topnotch.net</a>
+          </div>
+          <h4>Create Lightning Address</h4>
+          <h4>
+            <a href="" id="url" target="_blank" style="color: #f0f0f0 !important"></a>
+          </h4>
+          <input type="text" id="alias-input" placeholder="alias" class="input-group-text" /><span style="font-size: 200%"><b>@topnotch.net</b></span>
+          <input type="text" id="lnurl-input" placeholder="lnurl" />
+          <input type="hidden" id="payment-link" />
+          <input type="hidden" id="payment-id" />
+          <button id="create-button" class="btn btn-primary">CREATE</button>
+          <button type="button" id="payAndActivate" class="btn btn-primary" style="visibility: hidden">
+            Pay and Activate
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
+              <path
+                d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1H6.374z" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal" tabindex="-1" role="dialog" id="myModal" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" style="color: #000 !important">Waiting for payment confirmation</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  style="width: 20px; padding: 5px; padding-top: 0px; padding-bottom: 0px">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" style="text-align: center">
+                <!-- <button type="button" class="btn btn-primary"id="payment-link"
+        onclick="alert('The request has been approved!');">Approve</button> -->
+        
+        <button id="pay-button" class="btn btn-success" style="margin-bottom: 1rem;">Pay 777 Sats</button>
+
+                <p style="color: #000 !important">or scan the below QR to make payment of 777 Sats</p>
+                <img id="payment-qr" alt="" srcset="" style="width: 150px; height: 150px" />
+                
+                <br /><br />
+                <p style="color: #000">Note: After the payment is completed. Please confirm your payment</p>
+                <button type="button" class="btn btn-primary" id="paymentConfirmation" onClick="getPaymentConfirmation()">Confirm your lnbolt 777 sats payment now</button>
+                <p id="request-waiting-message" style="color: #000"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="height: 70vh">
+        <iframe class="embed-responsive-item" src="https://cryptostream.tech/index5.html" frameborder="0"></iframe>
+      </div>
+    </div>
+    <footer>
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+      <script>
+        $(document).ready(function () {
+          function createOrder() {
+            $.ajax({
+              type: "POST",
+              url: "/create-order",
+              dataType: "json",
+              success: function (response) {
+                $("#payment-link").val(response.payment_request);
+                $("#payment-id").val(response.payment_hash);
+                $("#payment-qr").attr("src", response.qr_code_svg);
+                openModal();
+              },
+              error: function (error) {
+                console.log(error);
+              },
+            });
+          }
+          $('#pay-button').click(function() {
+                    var paymentLink = $('#payment-link').val(); // Assuming payment-link input holds the payment link
+                    if(paymentLink) {
+                        window.open(`lightning:${paymentLink}`, '_blank');
+                    } else {
+                        alert('Payment link is not generated yet.');
+                    }
+                });
+
+          $("#create-button").click(function () {
+            const alias = $("#alias-input").val();
+            const lnurl = $("#lnurl-input").val();
+            $.ajax({
+              type: "POST",
+              url: "/create-lnurl",
+              contentType: "application/json",
+              data: JSON.stringify({ alias: alias, lnurl: lnurl }),
+              success: function (data) {
+                if (data.status === "OK") {
+                  alert(data.message);
+                  $("#create-button").hide();
+                  $("#payAndActivate").css("visibility", "visible");
+                } else {
+                  alert(data.message);
+                }
+              },
+              error: function (error) {
+                alert(error.responseJSON.message);
+                console.error("Error:", error.responseJSON.message);
+              },
+            });
+          });
+          $("#payAndActivate").click(function () {
+            createOrder();
+          });
+        });
+
+        function openModal() {
+          $("#myModal").modal("show");
+          setAutomaticButtonClick();
+        }
+        let paymentConfirmationTriggered = false;
+
+        function setAutomaticButtonClick() {
+          if (!paymentConfirmationTriggered) {
+            setTimeout(function () {
+              $("#paymentConfirmation").trigger("click");
+              paymentConfirmationTriggered = true;
+            }, 120000); // 2 minutes in milliseconds (2 * 60 * 1000)
+          }
+        }
+        function well_known() {
+          const alias = $("#alias-input").val();
+          $.ajax({
+            type: "GET",
+            url: `/.well-known/lnurlp/${alias}`,
+            success: function (data) {
+              $("#myModal").modal("hide");
+              $("#lnurl-form-container");
+              $("#url").text(`lightning:${alias}@topnotch.net`);
+              $("#url").prop("href", `lightning:${alias}@topnotch.net`);
+              $("#alias-input").val("");
+              $("#lnurl-input").val("");
+            },
+            error: function (error) {
+              console.log(error);
+            },
+          });
+        }
+
+        function getPaymentConfirmation() {
+          var invoiceId = $("#payment-id").val();
+          var url = "https://api.getalby.com/invoices/" + invoiceId;
+          var headers = {
+            Authorization: "Bearer OTHLN2ZLMJYTMZUYYI0ZM2Q5LWE1ZJGTN2I1ZTAZYZC5MDRH",
+          };
+          $.ajax({
+            url: url,
+            method: "GET",
+            headers: headers,
+            success: function (data) {
+              if (data.settled === true) {
+                alert("Payment successfully settled");
+                const alias = $("#alias-input").val();
+                $.ajax({
+                  type: "put",
+                  url: `/update-payment-status/${alias}`,
+                  success: function (data) {
+                    well_known();
+                  },
+                });
+              } else {
+                $("#request-waiting-message").text("Waiting for payment confirmation. Please do not refresh your browser!");
+              }
+            },
+            error: function (error) {
+              console.error("Error:", error);
+            },
+          });
+        }
+      </script>
+    </footer>
+  </body>
+</html>
