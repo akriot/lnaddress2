@@ -58,6 +58,29 @@ app.post("/create-lnurl", async (req, res) => {
   res.status(201).json({ status: "OK", message: "LNURL created successfully", data });
 });
 
+app.get("/invoice-info/:invoiceId", async (req, res) => {
+  const invoiceId = req.params.invoiceId;
+  try {
+    const url = `https://api.getalby.com/invoices/${invoiceId}`;
+    const headers = {
+      Authorization: `Bearer ${process.env.ALBY_CREATE_ORDER_AUTH}`,
+      "Content-Type": "application/json",
+    };
+    fetch(url, 
+      {method: "GET", headers: headers,
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+      return res.status(200).json({ status: "OK", ...responseData });
+    })
+    .catch((error) => {
+      return res.status(500).json({ status: "ERROR", message: "Something went wrong" });
+    });;
+  } catch (error) {
+    return res.status(500).json({ status: "ERROR", message: "Something went wrong" });
+  }
+});
+
 app.put("/update-payment-status/:alias", async (req, res) => {
   const requestedAlias = req.params.alias;
   const { error } = await supabase.from("lnurls").update({ payment_status: true }).eq("alias", requestedAlias);
