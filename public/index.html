@@ -64,7 +64,7 @@
         <div id="lnurl-form-container">
           <div class="row text-center">
             <a href="https://twitter.com/tooshort" target="_blank" style="font-size: 200%">@tooshort</a>
-            <a href="lightning:sir@tooshort.live" target="_blank" style="font-size: 200%">4eva@topnotch.net</a>
+            <a href="lightning:sir@tooshort.live" target="_blank" style="font-size: 200%">sir@tooshort.live</a>
           </div>
           <h4>Create Lightning Address</h4>
           <h4>
@@ -204,8 +204,8 @@
             success: function (data) {
               $("#myModal").modal("hide");
               $("#lnurl-form-container");
-              $("#url").text(`lightning:${alias}@topnotch.net`);
-              $("#url").prop("href", `lightning:${alias}@topnotch.net`);
+              $("#url").text(`lightning:${alias}@tooshort.live`);
+              $("#url").prop("href", `lightning:${alias}@tooshort.live`);
               $("#alias-input").val("");
               $("#lnurl-input").val("");
             },
