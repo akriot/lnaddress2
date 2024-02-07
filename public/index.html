@@ -217,14 +217,9 @@
 
         function getPaymentConfirmation() {
           var invoiceId = $("#payment-id").val();
-          var url = "https://api.getalby.com/invoices/" + invoiceId;
-          var headers = {
-            Authorization: "Bearer OTHLN2ZLMJYTMZUYYI0ZM2Q5LWE1ZJGTN2I1ZTAZYZC5MDRH",
-          };
           $.ajax({
-            url: url,
+            url: `/invoice-info/${invoiceId}`,
             method: "GET",
-            headers: headers,
             success: function (data) {
               if (data.settled === true) {
                 alert("Payment successfully settled");
